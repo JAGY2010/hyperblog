@@ -32,3 +32,147 @@ body{
 #container h1{
     font-size: 20px;
 }
+
+/* Estilos del simulador */
+:root {
+    color: #243047;
+    background: #f1f5f9;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    color: #243047;
+    padding: 2rem 0;
+}
+
+#cabecera {
+    background-color: #315c72;
+    box-shadow: 0 2px 8px rgba(36, 48, 71, 0.2);
+}
+
+#cabecera #tagline {
+    font-size: 0.8em;
+}
+
+#container {
+    width: min(70%, 900px);
+    background: #ffffff;
+    border: 1px solid #d8e0e8;
+}
+
+#connection-simulator {
+    margin-top: 2rem;
+    padding: 1.25rem;
+    border: 1px solid #cdd9e3;
+    border-radius: 8px;
+    background: #f8fafc;
+}
+
+#connection-simulator h2,
+#connection-simulator h3 {
+    margin-top: 0;
+}
+
+#connection-simulator p {
+    color: #526274;
+}
+
+.field-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem;
+}
+
+label {
+    display: grid;
+    gap: 0.4rem;
+    font-weight: bold;
+}
+
+input,
+select,
+button {
+    min-height: 2.5rem;
+    padding: 0.55rem 0.7rem;
+    border: 1px solid #aebdca;
+    border-radius: 4px;
+    font: inherit;
+}
+
+input:focus,
+select:focus,
+button:focus {
+    outline: 3px solid rgba(49, 92, 114, 0.25);
+    outline-offset: 1px;
+}
+
+.checkbox-label {
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+    align-self: end;
+    min-height: 2.5rem;
+}
+
+.checkbox-label input {
+    min-height: auto;
+}
+
+.connection-output {
+    margin-top: 1.25rem;
+    padding: 1rem;
+    border-left: 4px solid #e07a5f;
+    background: #243047;
+    color: #f8fafc;
+}
+
+.output-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+}
+
+.output-heading h3 {
+    color: #ffffff;
+}
+
+.output-heading button {
+    background: #e07a5f;
+    border-color: #e07a5f;
+    color: #ffffff;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+#connection-string {
+    display: block;
+    overflow-wrap: anywhere;
+    color: #d7f9f1;
+    line-height: 1.6;
+}
+
+#copy-status {
+    min-height: 1.2em;
+    margin-bottom: 0;
+    color: #f6bd60;
+}
+
+@media (max-width: 600px) {
+    body {
+        padding: 0;
+    }
+
+    #container {
+        width: 100%;
+        border-width: 0 0 1px;
+    }
+
+    .field-grid {
+        grid-template-columns: 1fr;
+    }
+}

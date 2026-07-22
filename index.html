@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -23,6 +23,87 @@
               <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Numquam dolore labore laudantium quibusdam voluptatibus voluptates quia necessitatibus. Eum reiciendis cum error quam quae minus, exercitationem natus quod beatae veritatis! Mollitia.</p>
               <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Animi cupiditate saepe aspernatur voluptas eum maiores doloremque recusandae nihil dolorem voluptatem quasi cum, veniam doloribus repellendus! Itaque nostrum exercitationem debitis dolorum!</p>
         </div>
+        <section id="connection-simulator" aria-labelledby="simulator-title">
+            <h2 id="simulator-title">Simulador de cadena de conexión</h2>
+            <p>Configura los datos para generar una cadena de ejemplo. No se realizará ninguna conexión.</p>
+            <form id="connection-form">
+                <div class="field-grid">
+                    <label>
+                        Motor
+                        <select id="engine">
+                            <option value="sqlserver">SQL Server</option>
+                            <option value="postgresql">PostgreSQL</option>
+                            <option value="mysql">MySQL</option>
+                        </select>
+                    </label>
+                    <label>
+                        Servidor
+                        <input id="server" type="text" value="localhost" required>
+                    </label>
+                    <label>
+                        Base de datos
+                        <input id="database" type="text" value="hyperblog" required>
+                    </label>
+                    <label>
+                        Usuario
+                        <input id="username" type="text" value="admin" required>
+                    </label>
+                    <label>
+                        Contraseña
+                        <input id="password" type="password" value="demo123" required>
+                    </label>
+                    <label class="checkbox-label">
+                        <input id="trusted" type="checkbox">
+                        Conexión de confianza
+                    </label>
+                </div>
+            </form>
+            <div class="connection-output">
+                <div class="output-heading">
+                    <h3>Cadena generada</h3>
+                    <button id="copy-connection" type="button">Copiar</button>
+                </div>
+                <code id="connection-string" aria-live="polite"></code>
+                <p id="copy-status" role="status"></p>
+            </div>
+        </section>
     </div>
+    <script>
+        const form = document.querySelector('#connection-form');
+        const output = document.querySelector('#connection-string');
+        const copyButton = document.querySelector('#copy-connection');
+        const copyStatus = document.querySelector('#copy-status');
+
+        const connectionTemplates = {
+            sqlserver: values => `Server=${values.server};Database=${values.database};User Id=${values.username};Password=${values.password};${values.trusted ? 'Trusted_Connection=True;' : 'TrustServerCertificate=True;'}`,
+            postgresql: values => `Host=${values.server};Database=${values.database};Username=${values.username};Password=${values.password};${values.trusted ? 'SSL Mode=Require;' : 'SSL Mode=Prefer;'}`,
+            mysql: values => `Server=${values.server};Database=${values.database};User=${values.username};Password=${values.password};${values.trusted ? 'SslMode=Required;' : 'SslMode=None;'}`
+        };
+
+        function getValues() {
+            return {
+                engine: document.querySelector('#engine').value,
+                server: document.querySelector('#server').value.trim(),
+                database: document.querySelector('#database').value.trim(),
+                username: document.querySelector('#username').value.trim(),
+                password: document.querySelector('#password').value,
+                trusted: document.querySelector('#trusted').checked
+            };
+        }
+
+        function updateConnectionString() {
+            const values = getValues();
+            output.textContent = connectionTemplates[values.engine](values);
+            copyStatus.textContent = '';
+        }
+
+        form.addEventListener('input', updateConnectionString);
+        copyButton.addEventListener('click', async () => {
+            await navigator.clipboard.writeText(output.textContent);
+            copyStatus.textContent = 'Cadena copiada al portapapeles.';
+        });
+
+        updateConnectionString();
+    </script>
 </body>
 </html>
